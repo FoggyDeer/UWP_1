@@ -1,22 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEditor;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-namespace DefaultNamespace
+public class Inventory : MonoBehaviour
 {
-    public class Inventory
+    private int _coinsQuantity;
+    private Dictionary<string, ItemBase> _items;
+    
+    private void Start()
     {
-        private int coinsQuantity = 0;
-        private List<ItemBase> items;
-
-        public void AddItem(ItemBase itemBase)
+        _items = new Dictionary<string, ItemBase>();
+    }
+    
+    public void AddItem(ItemBase itemBase)
+    {
+        if (_items.ContainsKey(itemBase.GetName()))
         {
-            items.Add(itemBase);
+            _items[itemBase.GetName()].Count++;
+        }
+        else
+        {
+            _items[itemBase.GetName()] = itemBase;
         }
         
-        public void IncreaseCoins(int amount)
-        {
-            coinsQuantity += amount;
-        }
+        Debug.Log("Item added: " + itemBase.ItemName);
+        Debug.Log(itemBase.ItemName + " quantity: " + _items[itemBase.ItemName].Count);
+    }
+        
+    public void IncreaseCoins(int amount)
+    {
+        _coinsQuantity += amount;
+        Debug.Log("Coins quantity: " + _coinsQuantity);
     }
 }
